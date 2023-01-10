@@ -52,7 +52,4 @@ Node* build_node_token(NodeType nType);
 void printTree(Node *top_node);
 
 #endif	// _H_HEAD1_
-<<<<<<< HEAD
 
-=======
->>>>>>> 908d8f335ea0b615e4e5044cf1b33712660b24a6
