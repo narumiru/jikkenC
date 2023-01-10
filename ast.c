@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "ast.h"
 
-Node *build_node3(NodeType nType, Node *first_node, Node *second_node, Node *third_node){
+Node* build_node3(NodeType nType, Node* first_node, Node* second_node, Node* third_node){
 
 	Node *new_node;
 	
@@ -20,9 +20,27 @@ Node *build_node3(NodeType nType, Node *first_node, Node *second_node, Node *thi
 }
 
 
+Node* build_node_token(NodeType nType){
+
+	Node *new_node;
+	
+	new_node = (Node*)malloc(sizeof(Node));
+	if(new_node == NULL){
+		return NULL;
+	}
+	
+	new_node->nType = nType;
+	new_node->first_node = NULL;
+	new_node->second_node = NULL;
+	new_node->third_node = NULL;
+
+	return new_node;
+}
 
 
-void printTree(Node *top_node){
+
+
+void printTree(Node* top_node){
 
 	//枝複数判定
 	if(top_node->second_node != NULL){
@@ -46,25 +64,26 @@ void printTree(Node *top_node){
 	}
 
 }
+/*
 int main(void){
 	Node *top;
 	printTree(top);
 	fprintf(stdout,"\n");
 	return 0;
 }
+/*
 
-
-int test(void){
+int main(void){
 
 	Node *top, *p1, *p2, *p3, *p4;
 
 	p1 = build_node3(ENUM_ADD,
-			build_node3(ENUM_NUMBER, NULL, NULL, NULL),
-			build_node3(ENUM_NUMBER, NULL, NULL, NULL),
+			build_node_token(ENUM_NUMBER),
+			build_node_token(ENUM_NUMBER),
 			NULL);
 	p2 = build_node3(ENUM_SUB,
-			build_node3(ENUM_NUMBER, NULL, NULL, NULL),
-			build_node3(ENUM_NUMBER, NULL, NULL, NULL),
+			build_node_token(ENUM_NUMBER),
+			build_node_token(ENUM_NUMBER),
 			NULL);
 	p3 = build_node3(ENUM_MUL,
 			build_node3(ENUM_NUMBER, NULL, NULL, NULL),
@@ -81,6 +100,6 @@ int test(void){
 	fprintf(stdout,"\n");
 	return 0;
 }
-
+*/
 //( 30 (( 29  29  25 )( 29  29  26 )( 29  29  27 ) 8 ) 24 )
 

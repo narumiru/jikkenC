@@ -1,11 +1,16 @@
-%token DEFINE ARRAY WHILE IF ELSE
 %{
 #include <stdio.h>
-#include "arithrv.tab.h"
+#include "kihon.tab.h"
 #include "ast.h"
 extern int yylex();
 extern int yyerror();
 %}
+
+%union{
+Node* np;
+int ival;
+}
+
 %token	DEFINE
 %token	ARRAY
 %token	WHILE
@@ -30,75 +35,106 @@ extern int yyerror();
 %token NUMBER
 %token IDENT
 
+
+%type <np> program declarations decl_statement statements statement assignment_stmt expression term factor add_op mul_op var loop_stmt cond_stmt condition cond_op
+
+
+
 %%
+
+
 program : declarations statements 
-	{top = build_node3(ENUM_program, $1, $2, NULL)}
+	{top = build_node3(ENUM_program, $1, $2, NULL);}
 ;
 declarations : decl_statement declarations 
-	{top = build_node3(ENUM_declarations, $1, $2, NULL)}
+	{$$ = build_node3(ENUM_declarations, $1, $2, NULL);}
 | decl_statement
-	{top = build_node3(ENUM_declarations, $1, NULL, NULL)}
+	{$$ = build_node3(ENUM_declarations, $1, NULL, NULL);}
 ;
 decl_statement : DEFINE IDENT SEMIC 
-	{top = build_node3(ENUM_decl_statement, $1, $2, NULL)}
+	{$$ = build_node3(ENUM_decl_statement, build_node_token(ENUM_DEFINE), build_node_token(ENUM_IDENT), NULL);}
 | ARRAY IDENT L_BRACKET NUMBER R_BRACKET SEMIC
-	{top = build_node3(ENUM_decl_statement, $1, $2, $3)}
+	{$$ = build_node3(ENUM_decl_statement, build_node_token(ENUM_ARRAY), build_node_token(ENUM_IDENT), build_node_token(ENUM_NUMBER));}
 ;
 statements :  statement statements
-	{top = build_node3(ENUM_statements, $1, $2, NULL)}
+	{$$ = build_node3(ENUM_statements, $1, $2, NULL);}
 | statement
-	{top = build_node3(ENUM_statements, $1, NULL, NULL)}
+	{$$ = build_node3(ENUM_statements, $1, NULL, NULL);}
 ;
 statement : assignment_stmt 
-	{top = build_node3(ENUM_statement, $1, NULL, NULL)}
+	{$$ = build_node3(ENUM_statement, $1, NULL, NULL);}
 | loop_stmt 
-	{top = build_node3(ENUM_statement, $1, NULL, NULL)}
+	{$$ = build_node3(ENUM_statement, $1, NULL, NULL);}
 | cond_stmt
-	{top = build_node3(ENUM_statement, $1, NULL, NULL)}
+	{$$ = build_node3(ENUM_statement, $1, NULL, NULL);}
 ;
 assignment_stmt : IDENT ASSIGN expression SEMIC 
-	{top = build_node3(ENUM_assignment_stmt, $1, $2, $3)}
+	{$$ = build_node3(ENUM_assignment_stmt, build_node_token(ENUM_IDENT), build_node_token(ENUM_ASSIGN), $3);}
 | IDENT  L_BRACKET  NUMBER  R_BRACKET  ASSIGN  expression SEMIC
-	{top = build_node3(ENUM_assignment_stmt, $1, $2, $3)}
+	{$$ = build_node3(ENUM_assignment_stmt, build_node_token(ENUM_IDENT), build_node_token(ENUM_NUMBER), build_node_token(ENUM_ASSIGN));}
 ;
 expression : expression add_op term 
+	{$$ = build_node3(ENUM_expression, $1, $2, $3);}
 | term
+	{$$ = build_node3(ENUM_expression, $1, NULL, NULL);}
 ;
 term : term mul_op factor 
+	{$$ = build_node3(ENUM_term, $1, $2, $3);}
 | factor
+	{$$ = build_node3(ENUM_term, $1, NULL, NULL);}
 ;
 factor : var 
+	{$$ = build_node3(ENUM_factor, $1, NULL, NULL);}
 |  L_PARAN expression R_PARAN 
+	{$$ = build_node3(ENUM_factor, $2, NULL, NULL);}
 ;
 add_op : ADD 
+	{$$ = build_node3(ENUM_add_op, build_node_token(ENUM_ADD), NULL, NULL);}
 | SUB
+	{$$ = build_node3(ENUM_add_op, build_node_token(ENUM_SUB), NULL, NULL);}
 ;
 mul_op : MUL 
+	{$$ = build_node3(ENUM_mul_op, build_node_token(ENUM_MUL), NULL, NULL);}
 | DIV
+	{$$ = build_node3(ENUM_mul_op, build_node_token(ENUM_DIV), NULL, NULL);}
 ;
 var : IDENT 
+	{$$ = build_node3(ENUM_var,build_node_token(ENUM_IDENT) , NULL, NULL);}
 | NUMBER 
+	{$$ = build_node3(ENUM_var, build_node_token(ENUM_NUMBER), NULL, NULL);}
 | IDENT L_BRACKET NUMBER R_BRACKET 
+	{$$ = build_node3(ENUM_var, build_node_token(ENUM_IDENT), build_node_token(ENUM_NUMBER), NULL);}
 ;
 loop_stmt : WHILE  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE
+	{$$ = build_node3(ENUM_loop_stmt, build_node_token(ENUM_WHILE), $3, $6);}
 ;
 cond_stmt : IF  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE 
+	{$$ = build_node3(ENUM_cond_stmt, build_node_token(ENUM_IF), $3, $6);}
 | IF  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE
+	{$$ = build_node3(ENUM_cond_stmt, build_node_token(ENUM_IF), build_node_token(ENUM_ELSE), $3);}
 ;
 condition : expression cond_op expression
+	{$$ = build_node3(ENUM_condition, $1, $2, $3);}
 ;
 cond_op : EQ 
+	{$$ = build_node3(ENUM_cond_op, build_node_token(ENUM_EQ), NULL, NULL);}
 | LT 
+	{$$ = build_node3(ENUM_cond_op, build_node_token(ENUM_LT), NULL, NULL);}
 | GT
+	{$$ = build_node3(ENUM_cond_op, build_node_token(ENUM_GT), NULL, NULL);}
 ;
 
 
 %%
 int main(void)
 {
-if (yyparse()){
-fprintf(stderr, "Error\n");
-return 1;
-}
+	if (yyparse()){
+		fprintf(stderr, "Error\n");
+		return 1;
+	}
+	Node *top;
+	printTree(top);
+	fprintf(stdout,"\n");
+	return 0;
 return 0;
 }

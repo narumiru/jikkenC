@@ -1,4 +1,6 @@
 #include <stdio.h>
+#ifndef _H_AST1_
+#define _H_AST1_
 
 typedef enum
 {
@@ -42,9 +44,11 @@ typedef struct abstract_node{
 	struct abstract_node *third_node;
 }Node;
 
+extern Node *top;
 
-Node *build_node3(NodeType nType, Node *first_node, Node *second_node, Node *third_node);
+Node* build_node3(NodeType nType, Node* first_node, Node* second_node, Node* third_node);
+Node* build_node_token(NodeType nType);
 
 void printTree(Node *top_node);
 
-
+#endif	// _H_HEAD1_
