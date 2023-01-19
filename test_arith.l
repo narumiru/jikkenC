@@ -1,4 +1,5 @@
 %{
+#include "test_ast.h"
 #include "test_arith.tab.h"
 %}
 %%
