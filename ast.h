@@ -39,6 +39,8 @@ ENUM_IDENT,
 
 typedef struct abstract_node{
 	NodeType nType;
+	char *varName; //INDETの場合
+	int value; //NUMBERの値
 	struct abstract_node *first_node;
 	struct abstract_node *second_node;
 	struct abstract_node *third_node;
@@ -48,6 +50,9 @@ extern Node *top;
 
 Node* build_node3(NodeType nType, Node* first_node, Node* second_node, Node* third_node);
 Node* build_node_token(NodeType nType);
+
+Node* build_node_num(NodeType nType, int value);
+Node* build_node_var(NodeType nType, char *varName);
 
 void printTree(Node *top_node);
 void write_node_type(NodeType type);

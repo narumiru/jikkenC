@@ -6,8 +6,9 @@ Node *top;
 %}
 
 %union{
-Node* np;
-int ival;
+Node* np; //木
+int ival; //数
+char* sp; //変数名
 }
 
 %token	DEFINE
@@ -31,8 +32,8 @@ int ival;
 %token	LT
 %token	GT
 
-%token NUMBER
-%token IDENT
+%token <sp> IDENT
+%token <ival> NUMBER
 
 %type <np> program declarations decl_statement statements statement assignment_stmt expression term factor add_op mul_op var loop_stmt cond_stmt condition cond_op
 
@@ -46,9 +47,9 @@ declarations : decl_statement declarations
 	{$$ = build_node3(ENUM_declarations, $1, NULL, NULL);}
 ;
 decl_statement : DEFINE IDENT SEMIC 
-	{$$ = build_node3(ENUM_decl_statement, build_node_token(ENUM_DEFINE), build_node_token(ENUM_IDENT), NULL);}
+	{$$ = build_node3(ENUM_decl_statement, build_node_token(ENUM_DEFINE), build_node_var(ENUM_IDENT,$2), NULL);}
 | ARRAY IDENT L_BRACKET NUMBER R_BRACKET SEMIC
-	{$$ = build_node3(ENUM_decl_statement, build_node_token(ENUM_ARRAY), build_node_token(ENUM_IDENT), build_node_token(ENUM_NUMBER));}
+	{$$ = build_node3(ENUM_decl_statement, build_node_token(ENUM_ARRAY), build_node_var(ENUM_IDENT,$2), build_node_num(ENUM_NUMBER, $4));}
 ;
 statements :  statement statements
 	{$$ = build_node3(ENUM_statements, $1, $2, NULL);}
@@ -63,9 +64,9 @@ statement : assignment_stmt
 	{$$ = build_node3(ENUM_statement, $1, NULL, NULL);}
 ;
 assignment_stmt : IDENT ASSIGN expression SEMIC 
-	{$$ = build_node3(ENUM_assignment_stmt, build_node_token(ENUM_IDENT), build_node_token(ENUM_ASSIGN), $3);}
+	{$$ = build_node3(ENUM_assignment_stmt, build_node_var(ENUM_IDENT,$1), build_node_token(ENUM_ASSIGN), $3);}
 | IDENT  L_BRACKET  NUMBER  R_BRACKET  ASSIGN  expression SEMIC
-	{$$ = build_node3(ENUM_assignment_stmt, build_node_token(ENUM_IDENT), build_node_token(ENUM_NUMBER), build_node_token(ENUM_ASSIGN));}
+	{$$ = build_node3(ENUM_assignment_stmt, build_node_var(ENUM_IDENT,$1), build_node_num(ENUM_NUMBER,$3), build_node_token(ENUM_ASSIGN));}
 ;
 expression : expression add_op term 
 	{$$ = build_node3(ENUM_expression, $1, $2, $3);}
@@ -93,11 +94,11 @@ mul_op : MUL
 	{$$ = build_node3(ENUM_mul_op, build_node_token(ENUM_DIV), NULL, NULL);}
 ;
 var : IDENT 
-	{$$ = build_node3(ENUM_var,build_node_token(ENUM_IDENT) , NULL, NULL);}
+	{$$ = build_node3(ENUM_var,build_node_var(ENUM_IDENT,$1) , NULL, NULL);}
 | NUMBER 
-	{$$ = build_node3(ENUM_var, build_node_token(ENUM_NUMBER), NULL, NULL);}
+	{$$ = build_node3(ENUM_var, build_node_num(ENUM_NUMBER,$1), NULL, NULL);}
 | IDENT L_BRACKET NUMBER R_BRACKET 
-	{$$ = build_node3(ENUM_var, build_node_token(ENUM_IDENT), build_node_token(ENUM_NUMBER), NULL);}
+	{$$ = build_node3(ENUM_var, build_node_var(ENUM_IDENT,$1), build_node_num(ENUM_NUMBER,$3), NULL);}
 ;
 loop_stmt : WHILE  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE
 	{$$ = build_node3(ENUM_loop_stmt, build_node_token(ENUM_WHILE), $3, $6);}

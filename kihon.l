@@ -23,8 +23,8 @@
 "-" 		return SUB;
 "*" 		return MUL;
 "/" 		return DIV;
-[0-9]+		return NUMBER;
-[a-z|A-Z]|[a-z|A-Z][a-z|A-Z|0-9]+ {return IDENT;}
+[0-9]+		{yylval.ival=atoi(yytext); return NUMBER;}
+[a-z|A-Z]|[a-z|A-Z][a-z|A-Z|0-9]+ {yylval.sp = strdup(yytext); return IDENT;}
 [ \t\n]     ;
 "$"		return 0;
 %%

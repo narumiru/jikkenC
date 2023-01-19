@@ -38,12 +38,54 @@ Node* build_node_token(NodeType nType){
 }
 
 
+Node* build_node_var(NodeType nType, char *varName){
+
+	Node *new_node;
+	
+	new_node = (Node*)malloc(sizeof(Node));
+	if(new_node == NULL){
+		return NULL;
+	}
+	
+	new_node->nType = nType;
+	new_node->varName = varName;
+	new_node->first_node = NULL;
+	new_node->second_node = NULL;
+	new_node->third_node = NULL;
+
+	return new_node;
+}
+
+Node* build_node_num(NodeType nType, int value){
+
+	Node *new_node;
+	
+	new_node = (Node*)malloc(sizeof(Node));
+	if(new_node == NULL){
+		return NULL;
+	}
+	
+	new_node->nType = nType;
+	new_node->value = value;
+	new_node->first_node = NULL;
+	new_node->second_node = NULL;
+	new_node->third_node = NULL;
+
+	return new_node;
+}
 
 
 void printTree(Node* top_node){
 
-
+	//ノード情報の記載
 	write_node_type(top_node->nType);
+	if(top_node->nType==ENUM_IDENT){
+		printf("\"%s\"",top_node->varName);
+	}
+	if(top_node->nType==ENUM_NUMBER){
+		printf("\"%d\"",top_node->value);
+	}
+
 	//枝複数判定
 	if(top_node->second_node != NULL){
 		printf("(");
@@ -159,7 +201,7 @@ void write_node_type(NodeType type){
 			printf("NUMBER");
 			break;
 		case 30:
-			printf("IDENT");
+			printf("INDENT");
 			break;
 		default:
 			printf("%d",type);
