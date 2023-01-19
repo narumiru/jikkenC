@@ -3,7 +3,6 @@
 #include "test_ast.h"
 #include "test_arith.tab.h"
 //extern int yyerror();
-Node *top;
 %}
 %union
 {
@@ -46,6 +45,7 @@ factor : NUMBER
 ;
 %%
 
+Node *top;
 int main(void)
 {
 	if(yyparse()) {

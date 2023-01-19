@@ -18,6 +18,8 @@ typedef struct abstract_node{
 	struct abstract_node *back_node;
 }Node;
 
+extern Node *top;
+
 Node* build_node2(NodeType nType, Node* front_node, Node* back_node);
 Node* build_node_token(NodeType nType);
 
