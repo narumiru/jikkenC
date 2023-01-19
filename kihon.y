@@ -1,9 +1,8 @@
 %{
 #include <stdio.h>
-#include "kihon.tab.h"
 #include "ast.h"
-extern int yylex();
-extern int yyerror();
+#include "kihon.tab.h"
+Node *top;
 %}
 
 %union{
@@ -35,14 +34,9 @@ int ival;
 %token NUMBER
 %token IDENT
 
-
 %type <np> program declarations decl_statement statements statement assignment_stmt expression term factor add_op mul_op var loop_stmt cond_stmt condition cond_op
 
-
-
 %%
-
-
 program : declarations statements 
 	{top = build_node3(ENUM_program, $1, $2, NULL);}
 ;
@@ -132,7 +126,6 @@ int main(void)
 		fprintf(stderr, "Error\n");
 		return 1;
 	}
-	Node *top;
 	printTree(top);
 	fprintf(stdout,"\n");
 	return 0;

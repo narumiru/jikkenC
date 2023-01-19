@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "test_ast.h"
-extern Node *top;
+//extern Node *top;
 
 Node* build_node2(NodeType nType, Node* front_node, Node* back_node){
 

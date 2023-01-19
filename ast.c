@@ -42,6 +42,8 @@ Node* build_node_token(NodeType nType){
 
 void printTree(Node* top_node){
 
+
+	write_node_type(top_node->nType);
 	//枝複数判定
 	if(top_node->second_node != NULL){
 		printf("(");
@@ -56,7 +58,6 @@ void printTree(Node* top_node){
 	if(top_node->third_node != NULL){
 		printTree(top_node->third_node);
 	}
-	printf(" %d ",top_node->nType);
 
 	//枝複数判定
 	if(top_node->second_node != NULL){
@@ -64,6 +65,108 @@ void printTree(Node* top_node){
 	}
 
 }
+
+void write_node_type(NodeType type){
+	switch(type){
+		case 0:
+			printf("program");
+			break;
+		case 1:
+			printf("declarations");
+			break;
+		case 2:
+			printf("decl_statement");
+			break;
+		case 3:
+			printf("statements");
+			break;
+		case 4:
+			printf("statement");
+			break;
+		case 5:
+			printf("assignment_stmt");
+			break;
+		case 6:
+			printf("expression");
+			break;
+		case 7:
+			printf("term");
+			break;
+		case 8:
+			printf("factor");
+			break;
+		case 9:
+			printf("add_op");
+			break;
+		case 10:
+			printf("mul_op");
+			break;
+		case 11:
+			printf("var");
+			break;
+		case 12:
+			printf("loop_stmt");
+			break;
+		case 13:
+			printf("cond_stmt");
+			break;
+		case 14:
+			printf("condition");
+			break;
+		case 15:
+			printf("cond_op");
+			break;
+		case 16:
+			printf("DEFINE");
+			break;
+		case 17:
+			printf("ARRAY");
+			break;
+		case 18:
+			printf("WHILE");
+			break;
+		case 19:
+			printf("IF");
+			break;
+		case 20:
+			printf("ELSE");
+			break;
+		case 21:
+			printf("EQ");
+			break;
+		case 22:
+			printf("LT");
+			break;
+		case 23:
+			printf("GT");
+			break;
+		case 24:
+			printf("ASSIGN");
+			break;
+		case 25:
+			printf("ADD");
+			break;
+		case 26:
+			printf("SUB");
+			break;
+		case 27:
+			printf("MUL");
+			break;
+		case 28:
+			printf("DIV");
+			break;
+		case 29:
+			printf("NUMBER");
+			break;
+		case 30:
+			printf("IDENT");
+			break;
+		default:
+			printf("%d",type);
+	}
+	printf(" ");
+}
+
 /*
 int main(void){
 	Node *top;

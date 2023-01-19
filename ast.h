@@ -50,6 +50,7 @@ Node* build_node3(NodeType nType, Node* first_node, Node* second_node, Node* thi
 Node* build_node_token(NodeType nType);
 
 void printTree(Node *top_node);
+void write_node_type(NodeType type);
 
 #endif	// _H_HEAD1_
 
