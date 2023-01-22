@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "ast.h"
 #include "kihon.tab.h"
-Node *top;
 %}
 
 %union{
@@ -121,6 +120,7 @@ cond_op : EQ
 
 
 %%
+/*
 int main(void)
 {
 	if (yyparse()){
@@ -132,3 +132,4 @@ int main(void)
 	return 0;
 return 0;
 }
+*/

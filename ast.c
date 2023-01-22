@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "ast.h"
 
+
 Node* build_node3(NodeType nType, Node* first_node, Node* second_node, Node* third_node){
 
 	Node *new_node;
@@ -210,14 +211,19 @@ void write_node_type(NodeType type){
 }
 
 /*
-int main(void){
-	Node *top;
+int main(void)
+{
+	if (yyparse()){
+		fprintf(stderr, "Error\n");
+		return 1;
+	}
 	printTree(top);
 	fprintf(stdout,"\n");
 	return 0;
+return 0;
 }
+*/
 /*
-
 int main(void){
 
 	Node *top, *p1, *p2, *p3, *p4;
