@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ast.h"
-#define MAX_NODE_NUM 1024
+#define MAX_NODE_NUM 1000
 
 typedef struct symbol_token{
 	char *varName; //変数名

@@ -103,9 +103,9 @@ loop_stmt : WHILE  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE
 	{$$ = build_node3(ENUM_loop_stmt, build_node_token(ENUM_WHILE), $3, $6);}
 ;
 cond_stmt : IF  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE 
-	{$$ = build_node3(ENUM_cond_stmt, build_node_token(ENUM_IF), $3, $6);}
+	{$$ = build_node3(ENUM_cond_stmt, $3, $6, NULL);}
 | IF  L_PARAN condition R_PARAN  L_BRACE statements R_BRACE ELSE L_BRACE statements R_BRACE
-	{$$ = build_node3(ENUM_cond_stmt, build_node_token(ENUM_IF), build_node_token(ENUM_ELSE), $3);}
+	{$$ = build_node3(ENUM_cond_stmt, $3, $6, $10);}
 ;
 condition : expression cond_op expression
 	{$$ = build_node3(ENUM_condition, $1, $2, $3);}

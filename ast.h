@@ -39,7 +39,7 @@ ENUM_IDENT,
 
 typedef struct abstract_node{
 	NodeType nType;
-	char *varName; //INDETの場合
+	char *varName; //INDETの場合変数名が入る、演算子系もここ？
 	int value; //NUMBERの値
 	struct abstract_node *first_node;
 	struct abstract_node *second_node;

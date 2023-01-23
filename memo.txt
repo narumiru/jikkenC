@@ -1,0 +1,134 @@
+$t0→offsetの初期位置
+$t1→算術式内での一時レジスタとして使用
+
+
+
+            printf("\n");
+
+
+main:
+	addi	$sp, $sp, -32
+	sw	$ra, 20($sp)
+	sw	$fp, 16($sp)
+	addiu	$fp, $sp, 28
+	ori	$a0, $a0, 10
+	jal	sum
+	add	$a1, $zero, $v0
+	lw	$ra, 20($sp)
+	lw	$fp, 16($sp)
+	addiu	$sp, $sp, 32
+	jr	$ra
+
+
+printf("\tINITIAL_GP = 0x10008000");
+printf("\tINITIAL_SP = 0x7ffffffc");
+printf("# system call service code");
+printf("\tstop_service = 99");
+printf("\t.text");
+printf("init:");
+printf("\tla\t$gp, INITIAL_GP");
+printf("\tla\t$sp, INITIAL_SP");
+printf("\tjal\tmain");
+printf("\tnop");
+printf("\tli\t$v0, stop_service");
+printf("\tsyscall");
+printf("\tnop");
+printf("\t# not reach here");
+printf("stop:");
+printf("\tj stop");
+printf("\tnop");
+
+\t.text \t0x00001000
+
+
+  INITIAL_GP = 0x10008000   # initial value of global pointer
+  INITIAL_SP = 0x7ffffffc   # initial value of stack pointer
+  # system call service number
+  stop_service = 99
+
+  .text       # テキストセグメントの開始
+init:
+  # initialize $gp (global pointer) and $sp (stack pointer)
+  la  $gp, INITIAL_GP   # $gp ← 0x10008000 (INITIAL_GP)
+  la  $sp, INITIAL_SP   # $sp ← 0x7ffffffc (INITIAL_SP)
+  jal main      # jump to `main'
+  nop       # (delay slot)
+  li  $v0, stop_service # $v0 ← 99 (stop_service)
+  syscall       # stop
+  nop
+  # not reach here
+stop:         # if syscall return
+  j   stop      # infinite loop...
+  nop       # (delay slot)
+
+  .text   0x00001000    # 以降のコードを0x00001000から配置
+main:
+
+  jr  $ra
+  nop       # (delay slot)
+
+  #
+  # data segment
+  #
+  .data 0x10004000              # データセグメントの開始
+
+# End of file 
+~                              
+
+
+printf("\tINITIAL_GP = 0x10008000\n");
+printf("\tINITIAL_SP = 0x7ffffffc\n");
+printf("\t# system call service number\n");
+printf("\tstop_service = 99\n");
+printf("\t.text\n");
+printf("init:\n");
+printf("\t# initialize $gp (global pointer) and $sp (stack pointer)\n");
+printf("\tla\t$gp, INITIAL_GP \n");
+printf("\tla\t$sp, INITIAL_SP\n");
+printf("\tjal main\n");
+printf("\tnop\t\n");
+printf("\tli\t$v0, stop_service\n");
+printf("\tsyscall\n");
+printf("\tnop\n");
+printf("stop:\n");
+printf("\tj\tstop\n");
+printf("\tnop\n");
+printf("\n");
+printf("\t.text\t 0x00001000\n");
+printf("main:\n");
+printf("\tjr\t$ra\n");
+printf("\tnop\t\n");
+
+define sum;
+define i;
+sum = 0;
+i=1;
+while(i<11){
+    sum = sum + i;
+    i = i + 1;
+}$
+
+define i;
+define fact;
+fact =1;
+i=1;
+while(i<6){
+    fact=fact*i;
+    i=i+1;
+}$
+
+define i;
+define a;
+define b;
+i=1;
+if(i==1){
+    a=255;
+}
+if(i>3){
+    b=255;
+}else{
+    b=511;
+}$
+
+
+
